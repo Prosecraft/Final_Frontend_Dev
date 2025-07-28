@@ -91,6 +91,7 @@ export default function TabLayout() {
         }}
       />
       
+      
       {/* Main App Tabs - Visible tab bar */}
       <Tabs.Screen
         name="home"
