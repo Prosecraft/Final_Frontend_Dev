@@ -67,6 +67,7 @@ export default function TabLayout() {
           title: 'Onboarding',
           tabBarStyle: { display: 'none' },
           tabBarButton: () => null,
+          headerShown: false,
         }}
       />
       
@@ -77,6 +78,7 @@ export default function TabLayout() {
           title: 'Login',
           tabBarStyle: { display: 'none' },
           tabBarButton: () => null,
+          headerShown: false,
         }}
       />
       <Tabs.Screen
@@ -85,6 +87,7 @@ export default function TabLayout() {
           title: 'Register',
           tabBarStyle: { display: 'none' },
           tabBarButton: () => null,
+          headerShown: false,
         }}
       />
       

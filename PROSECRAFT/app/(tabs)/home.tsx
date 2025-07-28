@@ -152,10 +152,10 @@ const HomeScreen = () => {
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
       
       {/* Fixed Header */}
-      <View style={[styles.header, { backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
+      <View style={[styles.header, {borderBottomColor: colors.border }]}>
         <View style={styles.headerLeft}>
-          <Text style={[styles.welcomeText, { color: colors.textSecondary }]}>Welcome back</Text>
-          <Text style={[styles.userName, { color: colors.text, fontSize: fontSize.large }]}>Ethan Thompson</Text>
+          <Text style={[styles.welcomeText, { }]}>Welcome back</Text>
+          <Text style={[styles.userName, { color: colors.text, fontSize: 15 }]}>Ethan Thompson</Text>
         </View>
         <View style={styles.headerRight}>
           <TouchableOpacity style={styles.notificationButton}>
@@ -186,7 +186,7 @@ const HomeScreen = () => {
             <View style={styles.draftHeader}>
               <View style={styles.draftHeaderLeft}>
                 <Sparkles size={20} color={colors.primary} />
-                <Text style={[styles.draftTitle, { color: colors.text, fontSize: fontSize.medium }]}>AI Writing Assistant</Text>
+                <Text style={[styles.draftTitle, { color: colors.text, fontSize: 15 }]}>AI Writing Assistant</Text>
               </View>
               <TouchableOpacity style={styles.infoButton}>
                 <Info size={18} color={colors.textSecondary} />
@@ -197,7 +197,7 @@ const HomeScreen = () => {
               <View style={[styles.textInputWrapper, { backgroundColor: colors.border }]}>
                 <Edit3 size={18} color={colors.textSecondary} style={styles.pencilIcon} />
                 <TextInput
-                  style={[styles.textInput, { color: colors.text, fontSize: fontSize.medium }]}
+                  style={[styles.textInput, { color: colors.text, fontSize: 15 }]}
                   placeholder="Start writing your content here..."
                   placeholderTextColor={colors.textSecondary}
                   multiline={true}
@@ -213,7 +213,7 @@ const HomeScreen = () => {
                 disabled={isAnalyzing}
               >
                 <Send size={18} color={colors.background} />
-                <Text style={[styles.analyzeButtonText, { color: colors.background, fontSize: fontSize.medium }]}>
+                <Text style={[styles.analyzeButtonText, { color: colors.background, fontSize: 15 }]}>
                   {isAnalyzing ? 'Analyzing...' : 'Analyze Text'}
                 </Text>
               </TouchableOpacity>
@@ -222,14 +222,14 @@ const HomeScreen = () => {
 
           {/* Quick Actions */}
           <View style={[styles.quickActionsSection, { marginBottom: spacing.xl }]}>
-            <Text style={[styles.sectionTitle, { color: colors.text, fontSize: fontSize.medium }]}>Quick Actions</Text>
+            <Text style={[styles.sectionTitle, { color: colors.text, fontSize: 15 }]}>Quick Actions</Text>
             <View style={styles.quickActionsGrid}>
               <TouchableOpacity 
                 style={[styles.quickActionCard, { backgroundColor: colors.surface }]}
                 onPress={() => handleQuickAction('grammar')}
               >
                 <Sparkles size={24} color={colors.primary} />
-                <Text style={[styles.quickActionText, { color: colors.text, fontSize: fontSize.small }]}>Grammar Check</Text>
+                <Text style={[styles.quickActionText, { color: colors.text, fontSize: 10 }]}>Grammar Check</Text>
               </TouchableOpacity>
               
               <TouchableOpacity 
@@ -237,7 +237,7 @@ const HomeScreen = () => {
                 onPress={() => handleQuickAction('style')}
               >
                 <Edit3 size={24} color={colors.primary} />
-                <Text style={[styles.quickActionText, { color: colors.text, fontSize: fontSize.small }]}>Style Enhancement</Text>
+                <Text style={[styles.quickActionText, { color: colors.text, fontSize: 10 }]}>Style Enhancement</Text>
               </TouchableOpacity>
               
               <TouchableOpacity 
@@ -245,7 +245,7 @@ const HomeScreen = () => {
                 onPress={() => handleQuickAction('tone')}
               >
                 <MessageSquare size={24} color={colors.primary} />
-                <Text style={[styles.quickActionText, { color: colors.text, fontSize: fontSize.small }]}>Tone Analysis</Text>
+                <Text style={[styles.quickActionText, { color: colors.text, fontSize: 10 }]}>Tone Analysis</Text>
               </TouchableOpacity>
               
               <TouchableOpacity 
@@ -253,14 +253,14 @@ const HomeScreen = () => {
                 onPress={() => handleQuickAction('plagiarism')}
               >
                 <FileText size={24} color={colors.primary} />
-                <Text style={[styles.quickActionText, { color: colors.text, fontSize: fontSize.small }]}>Plagiarism Check</Text>
+                <Text style={[styles.quickActionText, { color: colors.text, fontSize: 10 }]}>Plagiarism Check</Text>
               </TouchableOpacity>
             </View>
           </View>
 
           {/* Settings & Support */}
           <View style={[styles.settingsSection, { marginBottom: spacing.lg }]}>
-            <Text style={[styles.sectionTitle, { color: colors.text, fontSize: fontSize.medium }]}>Settings & Support</Text>
+            <Text style={[styles.sectionTitle, { color: colors.text, fontSize: 15 }]}>Settings & Support</Text>
             
             <View style={[styles.settingsGroup, { backgroundColor: colors.surface, marginBottom: spacing.md }]}>
               <TouchableOpacity 
@@ -268,7 +268,7 @@ const HomeScreen = () => {
                 onPress={() => handleNavigation('settings')}
               >
                 <Settings size={24} color={colors.primary} style={styles.settingIcon} />
-                <Text style={[styles.settingText, { color: colors.text, fontSize: fontSize.medium }]}>Settings</Text>
+                <Text style={[styles.settingText, { color: colors.text, fontSize: 15 }]}>Settings</Text>
               </TouchableOpacity>
               
               <TouchableOpacity 
@@ -276,7 +276,7 @@ const HomeScreen = () => {
                 onPress={() => handleNavigation('appearance')}
               >
                 <LayoutGrid size={24} color={colors.primary} style={styles.settingIcon} />
-                <Text style={[styles.settingText, { color: colors.text, fontSize: fontSize.medium }]}>Appearance</Text>
+                <Text style={[styles.settingText, { color: colors.text, fontSize: 15 }]}>Appearance</Text>
               </TouchableOpacity>
               
               <TouchableOpacity 
@@ -284,7 +284,7 @@ const HomeScreen = () => {
                 onPress={() => handleNavigation('blockedApps')}
               >
                 <SquareSlash size={24} color={colors.primary} style={styles.settingIcon} />
-                <Text style={[styles.settingText, { color: colors.text, fontSize: fontSize.medium }]}>Blocked Apps</Text>
+                <Text style={[styles.settingText, { color: colors.text, fontSize: 15 }]}>Blocked Apps</Text>
               </TouchableOpacity>
             </View>
             
@@ -294,7 +294,7 @@ const HomeScreen = () => {
                 onPress={() => handleNavigation('feedback')}
               >
                 <MessageSquare size={24} color={colors.primary} style={styles.settingIcon} />
-                <Text style={[styles.settingText, { color: colors.text, fontSize: fontSize.medium }]}>Share Feedback</Text>
+                <Text style={[styles.settingText, { color: colors.text, fontSize: 15 }]}>Share Feedback</Text>
               </TouchableOpacity>
               
               <TouchableOpacity 
@@ -302,7 +302,7 @@ const HomeScreen = () => {
                 onPress={() => handleNavigation('privacyPolicy')}
               >
                 <FileText size={24} color={colors.primary} style={styles.settingIcon} />
-                <Text style={[styles.settingText, { color: colors.text, fontSize: fontSize.medium }]}>Privacy Policy</Text>
+                <Text style={[styles.settingText, { color: colors.text, fontSize: 15 }]}>Privacy Policy</Text>
               </TouchableOpacity>
               
               <TouchableOpacity 
@@ -310,7 +310,7 @@ const HomeScreen = () => {
                 onPress={() => handleNavigation('support')}
               >
                 <LifeBuoy size={24} color={colors.primary} style={styles.settingIcon} />
-                <Text style={[styles.settingText, { color: colors.text, fontSize: fontSize.medium }]}>Support</Text>
+                <Text style={[styles.settingText, { color: colors.text, fontSize: 15 }]}>Support</Text>
               </TouchableOpacity>
             </View>
           </View>

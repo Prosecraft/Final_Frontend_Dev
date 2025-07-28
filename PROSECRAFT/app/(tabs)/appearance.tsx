@@ -68,9 +68,9 @@ const AppearanceScreen = () => {
   ];
 
   const fontSizes = [
-    { id: 'small', name: 'Small', size: fontSizeValues.small },
-    { id: 'medium', name: 'Medium', size: fontSizeValues.medium },
-    { id: 'large', name: 'Large', size: fontSizeValues.large },
+    { id: 'small', name: 'Small', size: 10 },
+    { id: 'medium', name: 'Medium', size: 15 },
+    { id: 'large', name: 'Large', size: 20 },
   ];
 
   const layouts = [
@@ -83,15 +83,7 @@ const AppearanceScreen = () => {
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
       <StatusBar barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} backgroundColor={colors.background} />
       
-      {/* Fixed Header */}
-      <View style={[styles.header, { backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-          <ArrowLeft size={24} color={colors.text} />
-        </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Appearance</Text>
-        <View style={styles.headerRight} />
-      </View>
-
+      
       <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
         
         {/* Theme Section */}
@@ -262,14 +254,14 @@ const AppearanceScreen = () => {
                   ]}
                   onPress={() => handleLayoutChange(layout.id)}
                 >
-                  <LayoutIcon size={20} color={layoutDensity === layout.id ? colors.background : colors.text} />
+                  <LayoutIcon size={17} color={layoutDensity === layout.id ? colors.background : colors.text} />
                   <Text style={[
                     styles.layoutText,
                     { color: layoutDensity === layout.id ? colors.background : colors.text }
                   ]}>
                     {layout.name}
                   </Text>
-                  {layoutDensity === layout.id && <Check size={20} color={colors.background} />}
+                  {layoutDensity === layout.id && <Check size={15} color={colors.background} />}
                 </TouchableOpacity>
               );
             })}
@@ -292,7 +284,7 @@ const AppearanceScreen = () => {
                 <Text style={[
                   styles.previewTitle, 
                   { 
-                    fontSize: fontSizeValues.large,
+                    fontSize: 20,
                     color: colors.text 
                   }
                 ]}>
@@ -340,7 +332,7 @@ const styles = StyleSheet.create({
   },
   section: {
     marginTop: 24,
-    paddingHorizontal: 20,
+    paddingHorizontal:7,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -414,7 +406,7 @@ const styles = StyleSheet.create({
   },
   fontSizeOptions: {
     flexDirection: 'row',
-    gap: 12,
+    gap: 10,
   },
   fontSizeOption: {
     flex: 1,
@@ -437,7 +429,8 @@ const styles = StyleSheet.create({
   },
   layoutOptions: {
     flexDirection: 'row',
-    gap: 12,
+    gap: 10,
+    width: 350
   },
   layoutOption: {
     flex: 1,
@@ -445,7 +438,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 16,
-    paddingHorizontal: 12,
+    paddingHorizontal: 15,
     borderRadius: 12,
     borderWidth: 1,
     gap: 8,
@@ -454,7 +447,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   layoutText: {
-    fontSize: 14,
+    fontSize: 10,
     fontWeight: '600',
   },
   previewContainer: {

@@ -30,6 +30,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../hooks/useTheme';
+import { goBack } from 'expo-router/build/global-state/routing';
 
 const SettingsScreen = () => {
   const router = useRouter();
@@ -111,26 +112,18 @@ const SettingsScreen = () => {
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
       
-      {/* Fixed Header */}
-      <View style={[styles.header, { backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-          <ArrowLeft size={24} color={colors.text} />
-        </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.text, fontSize: fontSize.large }]}>Settings</Text>
-        <View style={styles.headerRight} />
-      </View>
 
       <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
         
         {/* Account Section */}
         <View style={[styles.section, { paddingHorizontal: spacing.lg }]}>
-          <Text style={[styles.sectionTitle, { color: colors.textSecondary, fontSize: fontSize.small }]}>Account</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textSecondary, fontSize: 10 }]}>Account</Text>
           <View style={[styles.settingsGroup, { backgroundColor: colors.surface }]}>
             <TouchableOpacity style={[styles.settingItem, { borderBottomColor: colors.border }]}>
               <User size={20} color={colors.primary} style={styles.itemIcon} />
               <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemTitle, { color: colors.text, fontSize: fontSize.medium }]}>Profile</Text>
-                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: fontSize.small }]}>Manage your account information</Text>
+                <Text style={[styles.itemTitle, { color: colors.text, fontSize: 15 }]}>Profile</Text>
+                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: 10 }]}>Manage your account information</Text>
               </View>
               <ChevronRight size={20} color={colors.textSecondary} />
             </TouchableOpacity>
@@ -138,8 +131,8 @@ const SettingsScreen = () => {
             <TouchableOpacity style={[styles.settingItem, { borderBottomColor: colors.border }]} onPress={handleLanguageSelect}>
               <Globe size={20} color={colors.primary} style={styles.itemIcon} />
               <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemTitle, { color: colors.text, fontSize: fontSize.medium }]}>Language</Text>
-                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: fontSize.small }]}>English (UK)</Text>
+                <Text style={[styles.itemTitle, { color: colors.text, fontSize: 15 }]}>Language</Text>
+                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: 10 }]}>English (UK)</Text>
               </View>
               <ChevronRight size={20} color={colors.textSecondary} />
             </TouchableOpacity>
@@ -148,13 +141,13 @@ const SettingsScreen = () => {
 
         {/* App Features */}
         <View style={[styles.section, { paddingHorizontal: spacing.lg }]}>
-          <Text style={[styles.sectionTitle, { color: colors.textSecondary, fontSize: fontSize.small }]}>App Features</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textSecondary, fontSize: 10 }]}>App Features</Text>
           <View style={[styles.settingsGroup, { backgroundColor: colors.surface }]}>
             <View style={[styles.settingItem, { borderBottomColor: colors.border }]}>
               <Wind size={20} color={colors.primary} style={styles.itemIcon} />
               <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemTitle, { color: colors.text, fontSize: fontSize.medium }]}>Prosecraft Assistant</Text>
-                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: fontSize.small }]}>Floating bubble AI assistant</Text>
+                <Text style={[styles.itemTitle, { color: colors.text, fontSize: 15 }]}>Prosecraft Assistant</Text>
+                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: 10 }]}>Floating bubble AI assistant</Text>
               </View>
               <Switch
                 trackColor={{ false: colors.border, true: colors.primary }}
@@ -168,8 +161,8 @@ const SettingsScreen = () => {
             <View style={[styles.settingItem, { borderBottomColor: colors.border }]}>
               <Star size={20} color={colors.primary} style={styles.itemIcon} />
               <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemTitle, { color: colors.text, fontSize: fontSize.medium }]}>Quick Toggle</Text>
-                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: fontSize.small }]}>Turn Prosecraft on/off from notifications</Text>
+                <Text style={[styles.itemTitle, { color: colors.text, fontSize: 15 }]}>Quick Toggle</Text>
+                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: 10 }]}>Turn Prosecraft on/off from notifications</Text>
               </View>
               <Switch
                 trackColor={{ false: colors.border, true: colors.primary }}
@@ -183,8 +176,8 @@ const SettingsScreen = () => {
             <View style={[styles.settingItem, { borderBottomColor: colors.border }]}>
               <Sparkles size={20} color={colors.primary} style={styles.itemIcon} />
               <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemTitle, { color: colors.text, fontSize: fontSize.medium }]}>Generative AI</Text>
-                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: fontSize.small }]}>Brainstorm, draft, and perfect with AI</Text>
+                <Text style={[styles.itemTitle, { color: colors.text, fontSize: 15 }]}>Generative AI</Text>
+                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: 10 }]}>Brainstorm, draft, and perfect with AI</Text>
               </View>
               <Switch
                 trackColor={{ false: colors.border, true: colors.primary }}
@@ -198,8 +191,8 @@ const SettingsScreen = () => {
             <View style={[styles.settingItem, { borderBottomColor: colors.border }]}>
               <Database size={20} color={colors.primary} style={styles.itemIcon} />
               <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemTitle, { color: colors.text, fontSize: fontSize.medium }]}>Auto Save</Text>
-                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: fontSize.small }]}>Automatically save your drafts</Text>
+                <Text style={[styles.itemTitle, { color: colors.text, fontSize: 15 }]}>Auto Save</Text>
+                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: 10 }]}>Automatically save your drafts</Text>
               </View>
               <Switch
                 trackColor={{ false: colors.border, true: colors.primary }}
@@ -214,25 +207,15 @@ const SettingsScreen = () => {
 
         {/* Preferences */}
         <View style={[styles.section, { paddingHorizontal: spacing.lg }]}>
-          <Text style={[styles.sectionTitle, { color: colors.textSecondary, fontSize: fontSize.small }]}>Preferences</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textSecondary, fontSize: 10 }]}>Preferences</Text>
           <View style={[styles.settingsGroup, { backgroundColor: colors.surface, marginBottom: spacing.md }]}>
-            <TouchableOpacity 
-              style={[styles.settingItem, { borderBottomColor: colors.border }]}
-              onPress={() => handleNavigation('appearance')}
-            >
-              <Palette size={20} color={colors.primary} style={styles.itemIcon} />
-              <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemTitle, { color: colors.text, fontSize: fontSize.medium }]}>Appearance</Text>
-                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: fontSize.small }]}>Customize the app's look and feel</Text>
-              </View>
-              <ChevronRight size={20} color={colors.textSecondary} />
-            </TouchableOpacity>
+            
 
             <View style={[styles.settingItem, { borderBottomColor: colors.border }]}>
               <Moon size={20} color={colors.primary} style={styles.itemIcon} />
               <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemTitle, { color: colors.text, fontSize: fontSize.medium }]}>Dark Mode</Text>
-                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: fontSize.small }]}>Use dark theme</Text>
+                <Text style={[styles.itemTitle, { color: colors.text, fontSize: 15 }]}>Dark Mode</Text>
+                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: 10 }]}>Use dark theme</Text>
               </View>
               <Switch
                 trackColor={{ false: colors.border, true: colors.primary }}
@@ -246,8 +229,8 @@ const SettingsScreen = () => {
             <View style={[styles.settingItem, { borderBottomColor: colors.border }]}>
               <Bell size={20} color={colors.primary} style={styles.itemIcon} />
               <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemTitle, { color: colors.text, fontSize: fontSize.medium }]}>Notifications</Text>
-                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: fontSize.small }]}>Manage notification preferences</Text>
+                <Text style={[styles.itemTitle, { color: colors.text, fontSize: 15 }]}>Notifications</Text>
+                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: 10 }]}>Manage notification preferences</Text>
               </View>
               <Switch
                 trackColor={{ false: colors.border, true: colors.primary }}
@@ -264,8 +247,8 @@ const SettingsScreen = () => {
             >
               <Smartphone size={20} color={colors.primary} style={styles.itemIcon} />
               <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemTitle, { color: colors.text, fontSize: fontSize.medium }]}>Blocked Apps</Text>
-                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: fontSize.small }]}>Manage app restrictions</Text>
+                <Text style={[styles.itemTitle, { color: colors.text, fontSize: 15 }]}>Blocked Apps</Text>
+                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: 10 }]}>Manage app restrictions</Text>
               </View>
               <ChevronRight size={20} color={colors.textSecondary} />
             </TouchableOpacity>
@@ -274,7 +257,7 @@ const SettingsScreen = () => {
 
         {/* Privacy & Data */}
         <View style={[styles.section, { paddingHorizontal: spacing.lg }]}>
-          <Text style={[styles.sectionTitle, { color: colors.textSecondary, fontSize: fontSize.small }]}>Privacy & Data</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textSecondary, fontSize: 10 }]}>Privacy & Data</Text>
           <View style={[styles.settingsGroup, { backgroundColor: colors.surface, marginBottom: spacing.md }]}>
             <TouchableOpacity 
               style={[styles.settingItem, { borderBottomColor: colors.border }]}
@@ -282,8 +265,8 @@ const SettingsScreen = () => {
             >
               <Shield size={20} color={colors.primary} style={styles.itemIcon} />
               <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemTitle, { color: colors.text, fontSize: fontSize.medium }]}>Privacy Policy</Text>
-                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: fontSize.small }]}>Read our privacy policy</Text>
+                <Text style={[styles.itemTitle, { color: colors.text, fontSize: 15 }]}>Privacy Policy</Text>
+                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: 10 }]}>Read our privacy policy</Text>
               </View>
               <ChevronRight size={20} color={colors.textSecondary} />
             </TouchableOpacity>
@@ -291,8 +274,8 @@ const SettingsScreen = () => {
             <TouchableOpacity style={[styles.settingItem, { borderBottomColor: colors.border }]} onPress={handleDataExport}>
               <Database size={20} color={colors.primary} style={styles.itemIcon} />
               <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemTitle, { color: colors.text, fontSize: fontSize.medium }]}>Export Data</Text>
-                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: fontSize.small }]}>Download your data</Text>
+                <Text style={[styles.itemTitle, { color: colors.text, fontSize: 15 }]}>Export Data</Text>
+                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: 10 }]}>Download your data</Text>
               </View>
               <ChevronRight size={20} color={colors.textSecondary} />
             </TouchableOpacity>
@@ -300,8 +283,8 @@ const SettingsScreen = () => {
             <TouchableOpacity style={[styles.settingItem, { borderBottomColor: colors.border }]} onPress={handleAccountDelete}>
               <Shield size={20} color="#FF6B6B" style={styles.itemIcon} />
               <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemTitle, { color: '#FF6B6B', fontSize: fontSize.medium }]}>Delete Account</Text>
-                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: fontSize.small }]}>Permanently delete your account</Text>
+                <Text style={[styles.itemTitle, { color: '#FF6B6B', fontSize: 15 }]}>Delete Account</Text>
+                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: 10 }]}>Permanently delete your account</Text>
               </View>
               <ChevronRight size={20} color="#FF6B6B" />
             </TouchableOpacity>
@@ -310,7 +293,7 @@ const SettingsScreen = () => {
 
         {/* Support */}
         <View style={[styles.section, { paddingHorizontal: spacing.lg }]}>
-          <Text style={[styles.sectionTitle, { color: colors.textSecondary, fontSize: fontSize.small }]}>Support</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textSecondary, fontSize: 10 }]}>Support</Text>
           <View style={[styles.settingsGroup, { backgroundColor: colors.surface, marginBottom: spacing.md }]}>
             <TouchableOpacity 
               style={[styles.settingItem, { borderBottomColor: colors.border }]}
@@ -318,8 +301,8 @@ const SettingsScreen = () => {
             >
               <MessageSquare size={20} color={colors.primary} style={styles.itemIcon} />
               <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemTitle, { color: colors.text, fontSize: fontSize.medium }]}>Share Feedback</Text>
-                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: fontSize.small }]}>Help us improve Prosecraft</Text>
+                <Text style={[styles.itemTitle, { color: colors.text, fontSize: 15 }]}>Share Feedback</Text>
+                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: 10 }]}>Help us improve Prosecraft</Text>
               </View>
               <ChevronRight size={20} color={colors.textSecondary} />
             </TouchableOpacity>
@@ -330,8 +313,8 @@ const SettingsScreen = () => {
             >
               <HelpCircle size={20} color={colors.primary} style={styles.itemIcon} />
               <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemTitle, { color: colors.text, fontSize: fontSize.medium }]}>Help & Support</Text>
-                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: fontSize.small }]}>Get help and contact support</Text>
+                <Text style={[styles.itemTitle, { color: colors.text, fontSize: 15 }]}>Help & Support</Text>
+                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: 10 }]}>Get help and contact support</Text>
               </View>
               <ChevronRight size={20} color={colors.textSecondary} />
             </TouchableOpacity>
@@ -342,13 +325,13 @@ const SettingsScreen = () => {
         <View style={[styles.section, { paddingHorizontal: spacing.lg }]}>
           <TouchableOpacity style={[styles.logoutButton, { backgroundColor: colors.surface }]} onPress={handleLogout}>
             <LogOut size={20} color="#FF6B6B" style={styles.logoutIcon} />
-            <Text style={[styles.logoutText, { color: '#FF6B6B', fontSize: fontSize.medium }]}>Logout</Text>
+            <Text style={[styles.logoutText, { color: '#FF6B6B', fontSize: 15 }]}>Logout</Text>
           </TouchableOpacity>
         </View>
 
         {/* Version Info */}
         <View style={styles.versionContainer}>
-          <Text style={[styles.versionText, { color: colors.textSecondary, fontSize: fontSize.small }]}>Prosecraft v1.0.0</Text>
+          <Text style={[styles.versionText, { color: colors.textSecondary, fontSize: 10 }]}>Prosecraft v1.0.0</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

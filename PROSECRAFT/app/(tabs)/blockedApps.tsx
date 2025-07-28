@@ -111,21 +111,12 @@ const BlockedAppsScreen = () => {
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
-      
-      {/* Fixed Header */}
-      <View style={[styles.header, { backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-          <ArrowLeft size={24} color={colors.text} />
-        </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.text, fontSize: fontSize.large }]}>Blocked Apps</Text>
-        <View style={styles.headerRight} />
-      </View>
 
       <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
         
         {/* Summary Section */}
         <View style={[styles.summarySection, { paddingHorizontal: spacing.lg }]}>
-          <Text style={[styles.summaryText, { color: colors.textSecondary, fontSize: fontSize.medium }]}>
+          <Text style={[styles.summaryText, { color: colors.textSecondary, fontSize: 15 }]}>
             {blockedCount} of {Object.keys(blockedApps).length} apps are currently blocked
           </Text>
           
@@ -134,7 +125,7 @@ const BlockedAppsScreen = () => {
               style={[styles.summaryButton, { backgroundColor: colors.primary }]}
               onPress={handleSelectAll}
             >
-              <Text style={[styles.summaryButtonText, { color: colors.background, fontSize: fontSize.small }]}>
+              <Text style={[styles.summaryButtonText, { color: colors.background, fontSize: 10 }]}>
                 Block All
               </Text>
             </TouchableOpacity>
@@ -143,7 +134,7 @@ const BlockedAppsScreen = () => {
               style={[styles.summaryButton, { backgroundColor: colors.surface, borderColor: colors.border }]}
               onPress={handleClearAll}
             >
-              <Text style={[styles.summaryButtonText, { color: colors.text, fontSize: fontSize.small }]}>
+              <Text style={[styles.summaryButtonText, { color: colors.text, fontSize: 10 }]}>
                 Clear All
               </Text>
             </TouchableOpacity>
@@ -152,7 +143,7 @@ const BlockedAppsScreen = () => {
 
         {/* Apps List */}
         <View style={[styles.appsSection, { paddingHorizontal: spacing.lg }]}>
-          <Text style={[styles.sectionTitle, { color: colors.textSecondary, fontSize: fontSize.small }]}>
+          <Text style={[styles.sectionTitle, { color: colors.textSecondary, fontSize: 10 }]}>
             Apps
           </Text>
           
@@ -168,7 +159,7 @@ const BlockedAppsScreen = () => {
                   <View style={[styles.appIcon, { backgroundColor: colors.primary + '20' }]}>
                     <IconComponent size={20} color={colors.primary} />
                   </View>
-                  <Text style={[styles.appName, { color: colors.text, fontSize: fontSize.medium }]}>
+                  <Text style={[styles.appName, { color: colors.text, fontSize: 15 }]}>
                     {appName}
                   </Text>
                 </View>
@@ -187,7 +178,7 @@ const BlockedAppsScreen = () => {
 
         {/* Info Section */}
         <View style={[styles.infoSection, { paddingHorizontal: spacing.lg }]}>
-          <Text style={[styles.infoText, { color: colors.textSecondary, fontSize: fontSize.small }]}>
+          <Text style={[styles.infoText, { color: colors.textSecondary, fontSize: 10 }]}>
             Blocked apps will be prevented from opening while Prosecraft is active. You can toggle individual apps on or off as needed.
           </Text>
         </View>
