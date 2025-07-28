@@ -257,63 +257,7 @@ const HomeScreen = () => {
               </TouchableOpacity>
             </View>
           </View>
-
-          {/* Settings & Support */}
-          <View style={[styles.settingsSection, { marginBottom: spacing.lg }]}>
-            <Text style={[styles.sectionTitle, { color: colors.text, fontSize: 15 }]}>Settings & Support</Text>
-            
-            <View style={[styles.settingsGroup, { backgroundColor: colors.surface, marginBottom: spacing.md }]}>
-              <TouchableOpacity 
-                style={[styles.settingItem, { borderBottomColor: colors.border }]}
-                onPress={() => handleNavigation('settings')}
-              >
-                <Settings size={24} color={colors.primary} style={styles.settingIcon} />
-                <Text style={[styles.settingText, { color: colors.text, fontSize: 15 }]}>Settings</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity 
-                style={[styles.settingItem, { borderBottomColor: colors.border }]}
-                onPress={() => handleNavigation('appearance')}
-              >
-                <LayoutGrid size={24} color={colors.primary} style={styles.settingIcon} />
-                <Text style={[styles.settingText, { color: colors.text, fontSize: 15 }]}>Appearance</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity 
-                style={[styles.settingItem, { borderBottomColor: colors.border }]}
-                onPress={() => handleNavigation('blockedApps')}
-              >
-                <SquareSlash size={24} color={colors.primary} style={styles.settingIcon} />
-                <Text style={[styles.settingText, { color: colors.text, fontSize: 15 }]}>Blocked Apps</Text>
-              </TouchableOpacity>
-            </View>
-            
-            <View style={[styles.supportGroup, { backgroundColor: colors.surface }]}>
-              <TouchableOpacity 
-                style={[styles.settingItem, { borderBottomColor: colors.border }]}
-                onPress={() => handleNavigation('feedback')}
-              >
-                <MessageSquare size={24} color={colors.primary} style={styles.settingIcon} />
-                <Text style={[styles.settingText, { color: colors.text, fontSize: 15 }]}>Share Feedback</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity 
-                style={[styles.settingItem, { borderBottomColor: colors.border }]}
-                onPress={() => handleNavigation('privacyPolicy')}
-              >
-                <FileText size={24} color={colors.primary} style={styles.settingIcon} />
-                <Text style={[styles.settingText, { color: colors.text, fontSize: 15 }]}>Privacy Policy</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity 
-                style={[styles.settingItem, { borderBottomColor: colors.border }]}
-                onPress={() => handleNavigation('support')}
-              >
-                <LifeBuoy size={24} color={colors.primary} style={styles.settingIcon} />
-                <Text style={[styles.settingText, { color: colors.text, fontSize: 15 }]}>Support</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          
         </View>
       </ScrollView>
     </SafeAreaView>
