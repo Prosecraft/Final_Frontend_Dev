@@ -86,7 +86,7 @@ const LoginScreen = () => {
           {/* Logo Section */}
           <View style={styles.logoSection}>
             <Image
-              source={require('../assets/images/prosecraft1-logo.png')}
+              source={require('../assets/images/pro-splash01.png')}
               style={styles.logo}
               resizeMode="contain"
             />
@@ -224,9 +224,9 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   logo: {
-    width: 80,
-    height: 80,
-    marginBottom: 16,
+    width: 85,
+    height: 85,
+    marginBottom: 12,
   },
   appName: {
     fontSize: 24,
