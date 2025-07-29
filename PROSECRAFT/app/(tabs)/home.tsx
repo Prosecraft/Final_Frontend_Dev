@@ -205,7 +205,7 @@ const HomeScreen = () => {
       {/* Fixed Header */}
       <View style={[styles.header, {borderBottomColor: colors.border }]}>
         <View style={styles.headerLeft}>
-          <Text style={[styles.welcomeText, { }]}>Welcome back</Text>
+          <Text style={[styles.welcomeText, { color: colors.textSecondary }]}>Welcome back</Text>
           <Text style={[styles.userName, { color: colors.text, fontSize: 15 }]}>Ethan Thompson</Text>
         </View>
         <View style={styles.headerRight}>
