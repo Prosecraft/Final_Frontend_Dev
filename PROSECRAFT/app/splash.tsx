@@ -8,11 +8,13 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
+import { useTheme } from '../hooks/useTheme';
 
 const { width, height } = Dimensions.get('window');
 
 const SplashScreen = () => {
   const router = useRouter();
+  const { colors, theme } = useTheme();
   const bounceAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
@@ -123,10 +125,10 @@ const SplashScreen = () => {
   }, [bounceAnim, scaleAnim, opacityAnim, glowAnim, router]);
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#1A1A2E" />
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <StatusBar barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} backgroundColor={colors.background} />
       {/* Background gradient overlay */}
-      <View style={styles.gradientOverlay} />
+      <View style={[styles.gradientOverlay, { backgroundColor: `${colors.primary}10` }]} />
       <Animated.View
         style={[
           styles.logoContainer,
@@ -140,7 +142,7 @@ const SplashScreen = () => {
                 scale: scaleAnim,
               },
             ],
-            shadowColor: '#00BCD4',
+            shadowColor: colors.primary,
             shadowOffset: { width: 0, height: 0 },
             shadowOpacity: glowAnim.interpolate({
               inputRange: [0, 1],
@@ -170,7 +172,6 @@ const SplashScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1A1A2E',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -180,7 +181,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 188, 212, 0.05)',
   },
   logoContainer: {
     alignItems: 'center',

@@ -1,41 +1,42 @@
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import { Tabs } from 'expo-router';
-import { FileText, Home, LayoutGrid, LifeBuoy, MessageSquare, Settings, SquareSlash } from 'lucide-react-native';
+import { Home, LayoutGrid, Settings, SquareSlash } from 'lucide-react-native';
 import React from 'react';
+import { useTheme } from '../../hooks/useTheme';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { colors, theme } = useTheme();
 
   return (
     <Tabs
       initialRouteName="index"
       screenOptions={({ route }) => ({
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: colors.primary,
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#2B2B3A',
+          backgroundColor: colors.surface,
           borderTopWidth: 0,
           height: 80,
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingHorizontal: 0,
+          paddingHorizontal: 20,
+          paddingBottom: 10,
+          paddingTop: 8,
         },
         tabBarItemStyle: {
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
-          paddingVertical: 12,
-          minWidth: 60,
+          paddingVertical: 8,
+          minWidth: 0,
+          maxWidth: '25%',
         },
         tabBarLabelStyle: {
-          fontSize: 13,
+          fontSize: 12,
           fontWeight: '600',
-          marginBottom: 4,
+          marginTop: 4,
           textAlign: 'center',
+          color: colors.textSecondary,
         },
         tabBarIconStyle: {
-          marginTop: 6,
+          marginTop: 0,
           alignSelf: 'center',
         },
         tabBarIcon: ({ color, size }) => {
@@ -48,26 +49,27 @@ export default function TabLayout() {
               return <LayoutGrid color={color} size={size} />;
             case 'blockedApps':
               return <SquareSlash color={color} size={size} />;
-            case 'feedback':
-              return <MessageSquare color={color} size={size} />;
-            case 'privacyPolicy':
-              return <FileText color={color} size={size} />;
-            case 'support':
-              return <LifeBuoy color={color} size={size} />;
             default:
               return null;
           }
         },
       })}
     >
+      {/* Splash Screen - No tab bar */}
+      <Tabs.Screen
+        name="splash"
+        options={{
+          title: 'Splash',
+          href: null, // This completely removes it from the tab bar
+        }}
+      />
+      
       {/* Onboarding/Landing Page - No tab bar */}
       <Tabs.Screen
         name="index"
         options={{
           title: 'Onboarding',
-          tabBarStyle: { display: 'none' },
-          tabBarButton: () => null,
-          headerShown: false,
+          href: null, // This completely removes it from the tab bar
         }}
       />
       
@@ -76,60 +78,67 @@ export default function TabLayout() {
         name="login"
         options={{
           title: 'Login',
-          tabBarStyle: { display: 'none' },
-          tabBarButton: () => null,
-          headerShown: false,
+          href: null, // This completely removes it from the tab bar
         }}
       />
       <Tabs.Screen
         name="register"
         options={{
           title: 'Register',
-          tabBarStyle: { display: 'none' },
-          tabBarButton: () => null,
-          headerShown: false,
+          href: null, // This completely removes it from the tab bar
         }}
       />
-      
       
       {/* Main App Tabs - Visible tab bar */}
       <Tabs.Screen
         name="home"
-        options={{ title: 'Home' }}
+        options={{ 
+          title: 'Home',
+          tabBarLabel: 'Home',
+        }}
       />
       <Tabs.Screen
         name="settings"
-        options={{ title: 'Settings' }}
+        options={{ 
+          title: 'Settings',
+          tabBarLabel: 'Settings',
+        }}
       />
       <Tabs.Screen
         name="appearance"
-        options={{ title: 'Appearance' }}
+        options={{ 
+          title: 'Appearance',
+          tabBarLabel: 'Theme',
+        }}
       />
       <Tabs.Screen
         name="blockedApps"
-        options={{ title: 'Blocked Apps' }}
+        options={{ 
+          title: 'Blocked Apps',
+          tabBarLabel: 'Apps',
+        }}
       />
+      
+      {/* Hidden tabs - No tab bar */}
       <Tabs.Screen
         name="feedback"
         options={{ 
           title: 'Feedback',
-          tabBarStyle: { display: 'none'},
-          tabBarButton: () => null,
+          href: null, // This completely removes it from the tab bar
         }}
       />
       <Tabs.Screen
         name="privacyPolicy"
         options={{ 
           title: 'Privacy Policy', 
-          tabBarStyle: { display: 'none'},
-          tabBarButton: () => null, 
+          href: null, // This completely removes it from the tab bar
         }}
       />
       <Tabs.Screen
         name="support"
-        options={{ title: 'Support', 
-          tabBarStyle: { display: 'none'},
-          tabBarButton: () => null, 
+        options={{ 
+          title: 'Support', 
+          href: null, // This completely removes it from the tab bar
         }}
       />
     </Tabs>
