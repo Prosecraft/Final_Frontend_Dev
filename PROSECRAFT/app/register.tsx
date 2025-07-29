@@ -15,11 +15,9 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '../../hooks/useTheme';
 
 const RegisterScreen = () => {
   const router = useRouter();
-  const { colors, spacing, fontSize } = useTheme();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -83,7 +81,7 @@ const RegisterScreen = () => {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      router.push('/home');
+      router.push('/(tabs)/home');
     }, 1500);
   };
 
@@ -92,154 +90,162 @@ const RegisterScreen = () => {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      <StatusBar barStyle="light-content" backgroundColor={colors.background} />
-      
-      {/* Fixed Header */}
-      <View style={[styles.header, { backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
-        <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
-          <ArrowLeft size={24} color={colors.text} />
-        </TouchableOpacity>
-      </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#1A1A2E" />
 
-      <KeyboardAvoidingView 
-        style={styles.keyboardView}
+      <KeyboardAvoidingView
+        style={styles.keyboardContainer}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 24}
       >
-        <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        <ScrollView 
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
           
           {/* Logo Section */}
           <View style={styles.logoSection}>
             <Image
-              source={require('../assets/images/pro-splash01.png')}
+              source={require('./assets/images/pro-splash01.png')}
               style={styles.logo}
               resizeMode="contain"
             />
-            <Text style={[styles.appName, { color: colors.text }]}>Prosecraft</Text>
+            <Text style={styles.appName}>Prosecraft</Text>
           </View>
 
-          {/* Register Form */}
+          {/* Registration Form */}
           <View style={styles.formContainer}>
             <View style={styles.formHeader}>
-              <Text style={[styles.formTitle, { color: colors.text }]}>Create account</Text>
-              <Text style={[styles.formSubtitle, { color: colors.textSecondary }]}>Join Prosecraft and enhance your writing</Text>
+              <Text style={styles.formTitle}>Join Prosecraft</Text>
+              <Text style={styles.formSubtitle}>Create your account to get started</Text>
             </View>
 
             {/* Full Name Input */}
             <View style={styles.inputContainer}>
-              <View style={[styles.inputWrapper, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                <User size={20} color={colors.textSecondary} style={styles.inputIcon} />
+              <View style={styles.inputWrapper}>
+                <User size={20} color="#BBBBBB" style={styles.inputIcon} />
                 <TextInput
-                  style={[styles.input, { color: colors.text }]}
+                  style={styles.textInput}
                   placeholder="Full name"
-                  placeholderTextColor={colors.textSecondary}
-                  autoCapitalize="words"
-                  autoCorrect={false}
+                  placeholderTextColor="#BBBBBB"
                   value={fullName}
                   onChangeText={setFullName}
+                  autoCapitalize="words"
+                  autoCorrect={false}
                 />
               </View>
             </View>
 
             {/* Email Input */}
             <View style={styles.inputContainer}>
-              <View style={[styles.inputWrapper, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                <Mail size={20} color={colors.textSecondary} style={styles.inputIcon} />
+              <View style={styles.inputWrapper}>
+                <Mail size={20} color="#BBBBBB" style={styles.inputIcon} />
                 <TextInput
-                  style={[styles.input, { color: colors.text }]}
+                  style={styles.textInput}
                   placeholder="Email address"
-                  placeholderTextColor={colors.textSecondary}
+                  placeholderTextColor="#BBBBBB"
+                  value={email}
+                  onChangeText={setEmail}
                   keyboardType="email-address"
                   autoCapitalize="none"
                   autoCorrect={false}
-                  value={email}
-                  onChangeText={setEmail}
                 />
               </View>
             </View>
 
             {/* Password Input */}
             <View style={styles.inputContainer}>
-              <View style={[styles.inputWrapper, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <View style={styles.inputWrapper}>
                 <TextInput
-                  style={[styles.input, styles.passwordInput, { color: colors.text }]}
+                  style={styles.textInput}
                   placeholder="Password"
-                  placeholderTextColor={colors.textSecondary}
+                  placeholderTextColor="#BBBBBB"
+                  value={password}
+                  onChangeText={setPassword}
                   secureTextEntry={!showPassword}
                   autoCapitalize="none"
                   autoCorrect={false}
-                  value={password}
-                  onChangeText={setPassword}
                 />
-                <TouchableOpacity 
-                  style={styles.eyeIcon}
+                <TouchableOpacity
                   onPress={() => setShowPassword(!showPassword)}
+                  style={styles.eyeIcon}
                 >
                   {showPassword ? (
-                    <EyeOff size={20} color={colors.textSecondary} />
+                    <EyeOff size={20} color="#BBBBBB" />
                   ) : (
-                    <Eye size={20} color={colors.textSecondary} />
+                    <Eye size={20} color="#BBBBBB" />
                   )}
                 </TouchableOpacity>
               </View>
-              {password.length > 0 && (
-                <Text style={[
-                  styles.passwordHint,
-                  validatePassword(password) ? styles.passwordHintValid : styles.passwordHintInvalid
-                ]}>
-                  {validatePassword(password) ? '✓ Password is strong' : 'Password must be at least 8 characters'}
-                </Text>
-              )}
             </View>
 
             {/* Confirm Password Input */}
             <View style={styles.inputContainer}>
-              <View style={[styles.inputWrapper, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <View style={styles.inputWrapper}>
                 <TextInput
-                  style={[styles.input, styles.passwordInput, { color: colors.text }]}
+                  style={styles.textInput}
                   placeholder="Confirm password"
-                  placeholderTextColor={colors.textSecondary}
+                  placeholderTextColor="#BBBBBB"
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
                   secureTextEntry={!showConfirmPassword}
                   autoCapitalize="none"
                   autoCorrect={false}
-                  value={confirmPassword}
-                  onChangeText={setConfirmPassword}
                 />
-                <TouchableOpacity 
-                  style={styles.eyeIcon}
+                <TouchableOpacity
                   onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                  style={styles.eyeIcon}
                 >
                   {showConfirmPassword ? (
-                    <EyeOff size={20} color={colors.textSecondary} />
+                    <EyeOff size={20} color="#BBBBBB" />
                   ) : (
-                    <Eye size={20} color={colors.textSecondary} />
+                    <Eye size={20} color="#BBBBBB" />
                   )}
                 </TouchableOpacity>
               </View>
-              {confirmPassword.length > 0 && password !== confirmPassword && (
-                <Text style={[styles.passwordHint, styles.passwordHintInvalid]}>
-                  Passwords do not match
+            </View>
+
+            {/* Password Requirements */}
+            <View style={styles.requirementsSection}>
+              <Text style={styles.requirementsTitle}>
+                Password requirements:
+              </Text>
+              <View style={styles.requirementItem}>
+                <CheckCircle 
+                  size={16} 
+                  color={password.length >= 8 ? '#00BCD4' : '#BBBBBB'} 
+                />
+                <Text style={styles.requirementText}>
+                  At least 8 characters
                 </Text>
-              )}
+              </View>
             </View>
 
             {/* Terms Agreement */}
-            <View style={styles.termsContainer}>
-              <TouchableOpacity 
-                style={styles.checkboxContainer}
+            <View style={styles.termsSection}>
+              <TouchableOpacity
+                style={styles.termsCheckbox}
                 onPress={() => setAgreedToTerms(!agreedToTerms)}
               >
                 <View style={[
                   styles.checkbox,
-                  agreedToTerms && { backgroundColor: colors.primary, borderColor: colors.primary }
+                  { 
+                    backgroundColor: agreedToTerms ? '#00BCD4' : 'transparent',
+                    borderColor: agreedToTerms ? '#00BCD4' : '#35354A'
+                  }
                 ]}>
-                  {agreedToTerms && <CheckCircle size={16} color="#FFFFFF" />}
+                  {agreedToTerms && <CheckCircle size={16} color="#1A1A2E" />}
                 </View>
-                <Text style={[styles.termsText, { color: colors.textSecondary }]}>
+                <Text style={styles.termsText}>
                   I agree to the{' '}
-                  <Text style={[styles.termsLink, { color: colors.primary }]}>Terms of Service</Text>
+                  <Text style={styles.termsLink}>
+                    Terms of Service
+                  </Text>
                   {' '}and{' '}
-                  <Text style={[styles.termsLink, { color: colors.primary }]}>Privacy Policy</Text>
+                  <Text style={styles.termsLink}>
+                    Privacy Policy
+                  </Text>
                 </Text>
               </TouchableOpacity>
             </View>
@@ -248,52 +254,53 @@ const RegisterScreen = () => {
             <TouchableOpacity
               style={[
                 styles.signUpButton,
-                { backgroundColor: colors.primary },
                 isLoading && styles.signUpButtonDisabled
               ]}
               onPress={handleSignUp}
               disabled={isLoading}
             >
               <Text style={styles.signUpButtonText}>
-                {isLoading ? 'Creating account...' : 'Create account'}
+                {isLoading ? 'Creating account...' : 'Create Account'}
               </Text>
             </TouchableOpacity>
 
-            {/* Divider */}
-            <View style={styles.dividerContainer}>
-              <View style={[styles.divider, { backgroundColor: colors.border }]} />
-              <Text style={[styles.dividerText, { color: colors.textSecondary }]}>or continue with</Text>
-              <View style={[styles.divider, { backgroundColor: colors.border }]} />
-            </View>
-
             {/* Social Sign Up */}
-            <View style={styles.socialContainer}>
+            <View style={styles.socialSection}>
+              <View style={styles.divider}>
+                <View style={styles.dividerLine} />
+                <Text style={styles.dividerText}>or</Text>
+                <View style={styles.dividerLine} />
+              </View>
+
               <TouchableOpacity
-                style={[styles.socialButton, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                style={styles.socialButton}
                 onPress={() => handleSocialSignUp('Google')}
               >
-                <Text style={[styles.socialButtonText, { color: colors.text }]}>Google</Text>
+                <Text style={styles.socialButtonText}>
+                  Continue with Google
+                </Text>
               </TouchableOpacity>
-              
+
               <TouchableOpacity
-                style={[styles.socialButton, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                style={styles.socialButton}
                 onPress={() => handleSocialSignUp('Apple')}
               >
-                <Text style={[styles.socialButtonText, { color: colors.text }]}>Apple</Text>
+                <Text style={styles.socialButtonText}>
+                  Continue with Apple
+                </Text>
               </TouchableOpacity>
             </View>
 
-            {/* Login Link */}
-            <View style={styles.loginContainer}>
-              <Text style={[styles.loginText, { color: colors.textSecondary }]}>
+            {/* Sign In Link */}
+            <View style={styles.signInSection}>
+              <Text style={styles.signInText}>
                 Already have an account?{' '}
-                <Text 
-                  style={[styles.loginLink, { color: colors.primary }]}
-                  onPress={() => router.push('/login')}
-                >
+              </Text>
+              <TouchableOpacity onPress={handleGoBack}>
+                <Text style={styles.signInLink}>
                   Sign in
                 </Text>
-              </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
@@ -302,41 +309,57 @@ const RegisterScreen = () => {
   );
 };
 
+export default RegisterScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#1A1A2E',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 16,
     borderBottomWidth: 1,
+    borderBottomColor: '#35354A',
+    backgroundColor: '#2B2B3A',
   },
   backButton: {
     padding: 8,
   },
-  keyboardView: {
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FFFFFF',
+  },
+  headerSpacer: {
+    width: 40,
+  },
+  keyboardContainer: {
     flex: 1,
   },
   scrollContent: {
     flexGrow: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
+    paddingTop: 20,
     paddingBottom: 40,
   },
   logoSection: {
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: 20,
     marginBottom: 40,
   },
   logo: {
-    width: 85,
-    height: 85,
-    marginBottom: 12,
+    width: 80,
+    height: 80,
+    marginBottom: 16,
   },
   appName: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: '#FFFFFF',
   },
   formContainer: {
     flex: 1,
@@ -345,12 +368,14 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   formTitle: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: '#FFFFFF',
   },
   formSubtitle: {
     fontSize: 16,
+    color: '#BBBBBB',
   },
   inputContainer: {
     marginBottom: 20,
@@ -358,7 +383,7 @@ const styles = StyleSheet.create({
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
+    backgroundColor: '#2B2B3A',
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 16,
@@ -366,33 +391,37 @@ const styles = StyleSheet.create({
   inputIcon: {
     marginRight: 12,
   },
-  input: {
+  textInput: {
     flex: 1,
     fontSize: 16,
-  },
-  passwordInput: {
-    paddingRight: 50,
+    paddingVertical: 0,
+    color: '#FFFFFF',
   },
   eyeIcon: {
-    position: 'absolute',
-    right: 16,
     padding: 4,
   },
-  passwordHint: {
-    fontSize: 12,
-    marginTop: 8,
-    marginLeft: 4,
-  },
-  passwordHintValid: {
-    color: '#10B981',
-  },
-  passwordHintInvalid: {
-    color: '#EF4444',
-  },
-  termsContainer: {
+  requirementsSection: {
     marginBottom: 24,
   },
-  checkboxContainer: {
+  requirementsTitle: {
+    fontSize: 14,
+    marginBottom: 8,
+    color: '#BBBBBB',
+  },
+  requirementItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  requirementText: {
+    fontSize: 14,
+    marginLeft: 8,
+    color: '#BBBBBB',
+  },
+  termsSection: {
+    marginBottom: 24,
+  },
+  termsCheckbox: {
     flexDirection: 'row',
     alignItems: 'flex-start',
   },
@@ -401,72 +430,78 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 4,
     borderWidth: 2,
-    borderColor: '#D1D5DB',
     marginRight: 12,
     marginTop: 2,
     alignItems: 'center',
     justifyContent: 'center',
   },
   termsText: {
-    flex: 1,
     fontSize: 14,
+    flex: 1,
     lineHeight: 20,
+    color: '#BBBBBB',
   },
   termsLink: {
     fontWeight: '600',
+    color: '#00BCD4',
   },
   signUpButton: {
-    paddingVertical: 16,
+    backgroundColor: '#00BCD4',
     borderRadius: 12,
+    paddingVertical: 16,
     alignItems: 'center',
     marginBottom: 24,
   },
   signUpButtonDisabled: {
-    opacity: 0.6,
+    opacity: 0.7,
   },
   signUpButtonText: {
-    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
+    color: '#1A1A2E',
   },
-  dividerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 24,
+  socialSection: {
+    marginBottom: 32,
   },
   divider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  dividerLine: {
     flex: 1,
     height: 1,
+    backgroundColor: '#35354A',
   },
   dividerText: {
     marginHorizontal: 16,
     fontSize: 14,
-  },
-  socialContainer: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 32,
+    color: '#BBBBBB',
   },
   socialButton: {
-    flex: 1,
-    paddingVertical: 16,
+    backgroundColor: '#2B2B3A',
     borderRadius: 12,
-    borderWidth: 1,
+    paddingVertical: 16,
     alignItems: 'center',
+    marginBottom: 12,
   },
   socialButtonText: {
     fontSize: 16,
     fontWeight: '500',
+    color: '#FFFFFF',
   },
-  loginContainer: {
+  signInSection: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  loginText: {
+  signInText: {
     fontSize: 14,
+    color: '#BBBBBB',
   },
-  loginLink: {
+  signInLink: {
+    fontSize: 14,
     fontWeight: '600',
+    color: '#00BCD4',
   },
-});
-
-export default RegisterScreen;
+}); 

@@ -29,7 +29,7 @@ const OnboardingScreen = () => {
         <View style={styles.heroSection}>
           <View style={styles.logoContainer}>
             <Image
-              source={require('../assets/images/prosecraft1-logo.png')}
+              source={require('./assets/images/prosecraft1-logo.png')}
               style={styles.logo}
               resizeMode="contain"
             />
@@ -237,4 +237,4 @@ const styles = StyleSheet.create({
     color: '#888888',
     textAlign: 'center',
   },
-});
+}); 

@@ -8,7 +8,7 @@ export default function TabLayout() {
 
   return (
     <Tabs
-      initialRouteName="index"
+      initialRouteName="home"
       screenOptions={({ route }) => ({
         tabBarActiveTintColor: colors.primary,
         headerShown: false,
@@ -55,40 +55,6 @@ export default function TabLayout() {
         },
       })}
     >
-      {/* Splash Screen - No tab bar */}
-      <Tabs.Screen
-        name="splash"
-        options={{
-          title: 'Splash',
-          href: null, // This completely removes it from the tab bar
-        }}
-      />
-      
-      {/* Onboarding/Landing Page - No tab bar */}
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Onboarding',
-          href: null, // This completely removes it from the tab bar
-        }}
-      />
-      
-      {/* Login/Register - No tab bar */}
-      <Tabs.Screen
-        name="login"
-        options={{
-          title: 'Login',
-          href: null, // This completely removes it from the tab bar
-        }}
-      />
-      <Tabs.Screen
-        name="register"
-        options={{
-          title: 'Register',
-          href: null, // This completely removes it from the tab bar
-        }}
-      />
-      
       {/* Main App Tabs - Visible tab bar */}
       <Tabs.Screen
         name="home"
