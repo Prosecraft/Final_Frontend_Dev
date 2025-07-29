@@ -6,6 +6,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider>
       <Stack>
+        <Stack.Screen name="splash" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
       <StatusBar style="auto" />

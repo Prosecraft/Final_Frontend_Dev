@@ -1,33 +1,36 @@
 import { useRouter } from 'expo-router';
 import {
-    Bell,
-    Edit3,
-    FileText,
-    Info,
-    LayoutGrid,
-    LifeBuoy,
-    MessageSquare,
-    Send,
-    Settings,
-    Sparkles,
-    SquareSlash,
-    User,
+  Bell,
+  Edit3,
+  FileText,
+  Info,
+  MessageSquare,
+  Send,
+  Sparkles,
+  User
 } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-    Alert,
-    Dimensions,
-    Image,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  Dimensions,
+  Image,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../hooks/useTheme';
+import {
+  getGrammarSuggestions,
+  getPlagiarismCheck,
+  getStyleEnhancement,
+  getToneAnalysis,
+  GrammarAnalysis
+} from '../../services/geminiService';
 
 const { width } = Dimensions.get('window');
 
@@ -36,6 +39,7 @@ const HomeScreen = () => {
   const { colors, spacing, fontSize } = useTheme();
   const [draftText, setDraftText] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisResults, setAnalysisResults] = useState<any>(null);
 
   const handleNavigation = (screen: string) => {
     switch (screen) {
@@ -62,88 +66,135 @@ const HomeScreen = () => {
     }
   };
 
-  const handleAnalyzeText = () => {
+  const handleAnalyzeText = async () => {
     if (!draftText.trim()) {
       Alert.alert('No Text', 'Please enter some text to analyze');
       return;
     }
 
     setIsAnalyzing(true);
-    setTimeout(() => {
+    try {
+      const grammarResults = await getGrammarSuggestions(draftText);
+      setAnalysisResults(grammarResults);
+      
+      if (grammarResults.corrections && grammarResults.corrections.length > 0) {
+        const correctionsText = grammarResults.corrections
+          .map((correction: any, index: number) => 
+            `${index + 1}. "${correction.original}" → "${correction.suggestion}"\n   ${correction.explanation}`
+          )
+          .join('\n\n');
+        
+        Alert.alert(
+          'Grammar Analysis Complete',
+          `Found ${grammarResults.corrections.length} potential issues:\n\n${correctionsText}`,
+          [
+            { text: 'Apply Fixes', onPress: () => applyGrammarFixes(grammarResults) },
+            { text: 'OK' }
+          ]
+        );
+      } else {
+        Alert.alert('Grammar Analysis Complete', '✅ No grammar issues found! Your text looks great.');
+      }
+    } catch (error) {
+      Alert.alert('Analysis Error', 'Failed to analyze text. Please check your internet connection and try again.');
+      console.error('Analysis error:', error);
+    } finally {
       setIsAnalyzing(false);
-      Alert.alert('Analysis Complete', 'Your text has been analyzed successfully!');
-    }, 2000);
+    }
   };
 
-  const handleQuickAction = (action: string) => {
+  const applyGrammarFixes = (results: GrammarAnalysis) => {
+    let correctedText = draftText;
+    results.corrections.forEach((correction: any) => {
+      correctedText = correctedText.replace(correction.original, correction.suggestion);
+    });
+    setDraftText(correctedText);
+    Alert.alert('Fixes Applied', 'Grammar corrections have been applied to your text.');
+  };
+
+  const handleQuickAction = async (action: string) => {
     if (!draftText.trim()) {
       Alert.alert('No Text', 'Please enter some text in the draft area first');
       return;
     }
 
-    switch (action) {
-      case 'grammar':
-        Alert.alert(
-          'Grammar Check',
-          'Checking your text for grammar errors...',
-          [{ text: 'OK' }]
-        );
-        setTimeout(() => {
-          Alert.alert(
-            'Grammar Check Complete',
-            'Found 2 potential grammar issues:\n\n• "to" should be "too" in line 1\n• Missing comma after "however" in line 3',
-            [{ text: 'Fix Issues', onPress: () => console.log('Fix grammar issues') }, { text: 'OK' }]
-          );
-        }, 1500);
-        break;
-      
-      case 'style':
-        Alert.alert(
-          'Style Enhancement',
-          'Analyzing your writing style...',
-          [{ text: 'OK' }]
-        );
-        setTimeout(() => {
+    setIsAnalyzing(true);
+
+    try {
+      switch (action) {
+        case 'grammar':
+          Alert.alert('Grammar Check', 'Checking your text for grammar errors...', [{ text: 'OK' }]);
+          const grammarResults = await getGrammarSuggestions(draftText);
+          
+          if (grammarResults.corrections && grammarResults.corrections.length > 0) {
+            const correctionsText = grammarResults.corrections
+              .map((correction: any, index: number) => 
+                `${index + 1}. "${correction.original}" → "${correction.suggestion}"\n   ${correction.explanation}`
+              )
+              .join('\n\n');
+            
+            Alert.alert(
+              'Grammar Check Complete',
+              `Found ${grammarResults.corrections.length} potential issues:\n\n${correctionsText}`,
+              [
+                { text: 'Apply Fixes', onPress: () => applyGrammarFixes(grammarResults) },
+                { text: 'OK' }
+              ]
+            );
+          } else {
+            Alert.alert('Grammar Check Complete', '✅ No grammar issues found! Your text looks great.');
+          }
+          break;
+        
+        case 'style':
+          Alert.alert('Style Enhancement', 'Analyzing your writing style...', [{ text: 'OK' }]);
+          const styleResults = await getStyleEnhancement(draftText);
+          
+          const improvementsText = styleResults.improvements?.join('\n• ') || 'No specific improvements found.';
+          const scoreText = styleResults.overall_score ? `\n\nOverall Score: ${styleResults.overall_score}/100` : '';
+          
           Alert.alert(
             'Style Enhancement Complete',
-            'Suggestions to improve your writing:\n\n• Use more active voice\n• Vary sentence length\n• Add transitional phrases',
+            `Suggestions to improve your writing:${scoreText}\n\n• ${improvementsText}`,
             [{ text: 'Apply Suggestions', onPress: () => console.log('Apply style suggestions') }, { text: 'OK' }]
           );
-        }, 1500);
-        break;
-      
-      case 'tone':
-        Alert.alert(
-          'Tone Analysis',
-          'Analyzing the tone of your text...',
-          [{ text: 'OK' }]
-        );
-        setTimeout(() => {
+          break;
+        
+        case 'tone':
+          Alert.alert('Tone Analysis', 'Analyzing the tone of your text...', [{ text: 'OK' }]);
+          const toneResults = await getToneAnalysis(draftText);
+          
+          const toneText = `Your text has a:\n\n• Formality: ${toneResults.tone?.formality || 'N/A'}\n• Sentiment: ${toneResults.tone?.sentiment || 'N/A'}\n• Confidence: ${toneResults.tone?.confidence || 'N/A'}\n• Clarity: ${toneResults.tone?.clarity || 'N/A'}`;
+          const scoreText2 = toneResults.score ? `\n\nTone Score: ${toneResults.score}/100` : '';
+          
           Alert.alert(
             'Tone Analysis Complete',
-            'Your text has a:\n\n• Formality: Professional\n• Sentiment: Positive\n• Confidence: High\n• Clarity: Good',
+            `${toneText}${scoreText2}`,
             [{ text: 'View Details', onPress: () => console.log('View tone details') }, { text: 'OK' }]
           );
-        }, 1500);
-        break;
-      
-      case 'plagiarism':
-        Alert.alert(
-          'Plagiarism Check',
-          'Checking your text for potential plagiarism...',
-          [{ text: 'OK' }]
-        );
-        setTimeout(() => {
+          break;
+        
+        case 'plagiarism':
+          Alert.alert('Plagiarism Check', 'Checking your text for potential plagiarism...', [{ text: 'OK' }]);
+          const plagiarismResults = await getPlagiarismCheck(draftText);
+          
+          const plagiarismText = `✅ ${plagiarismResults.analysis || 'No plagiarism detected!'}\n\nOriginality Score: ${plagiarismResults.originality_score || 'N/A'}%\nRisk Level: ${plagiarismResults.risk_level || 'N/A'}`;
+          
           Alert.alert(
             'Plagiarism Check Complete',
-            '✅ No plagiarism detected!\n\nYour text appears to be original content.',
+            plagiarismText,
             [{ text: 'View Report', onPress: () => console.log('View plagiarism report') }, { text: 'OK' }]
           );
-        }, 2000);
-        break;
-      
-      default:
-        Alert.alert('Coming Soon', 'This feature will be available soon!');
+          break;
+        
+        default:
+          Alert.alert('Coming Soon', 'This feature will be available soon!');
+      }
+    } catch (error) {
+      Alert.alert('Analysis Error', `Failed to analyze ${action}. Please check your internet connection and try again.`);
+      console.error(`${action} analysis error:`, error);
+    } finally {
+      setIsAnalyzing(false);
     }
   };
 
@@ -212,7 +263,13 @@ const HomeScreen = () => {
                 onPress={handleAnalyzeText}
                 disabled={isAnalyzing}
               >
-                <Send size={18} color={colors.background} />
+                {isAnalyzing ? (
+                  <View style={styles.loadingContainer}>
+                    <Text style={[styles.loadingText, { color: colors.background }]}>⏳</Text>
+                  </View>
+                ) : (
+                  <Send size={18} color={colors.background} />
+                )}
                 <Text style={[styles.analyzeButtonText, { color: colors.background, fontSize: 15 }]}>
                   {isAnalyzing ? 'Analyzing...' : 'Analyze Text'}
                 </Text>
@@ -387,6 +444,16 @@ const styles = StyleSheet.create({
   },
   analyzeButtonText: {
     fontWeight: '600',
+  },
+  loadingContainer: {
+    width: 18,
+    height: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   quickActionsSection: {
   },
