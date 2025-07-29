@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { Eye, EyeOff, Mail } from 'lucide-react-native';
+import { ChevronRight, Eye, EyeOff, Mail } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
     Alert,
@@ -170,23 +170,33 @@ const LoginScreen = () => {
                 <View style={styles.dividerLine} />
               </View>
 
-              <TouchableOpacity
-                style={styles.socialButton}
-                onPress={() => handleSocialSignIn('Google')}
-              >
-                <Text style={styles.socialButtonText}>
-                  Continue with Google
-                </Text>
-              </TouchableOpacity>
+              <View style={styles.socialButtonsContainer}>
+                <TouchableOpacity
+                  style={styles.socialButton}
+                  onPress={() => handleSocialSignIn('Google')}
+                >
+                  <View style={styles.socialButtonContent}>
+                    <View style={styles.socialIconContainer}>
+                      <Text style={styles.googleIcon}>G</Text>
+                    </View>
+                    <Text style={styles.socialButtonText}>Google</Text>
+                  </View>
+                  <ChevronRight size={20} color="#BBBBBB" />
+                </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.socialButton}
-                onPress={() => handleSocialSignIn('Apple')}
-              >
-                <Text style={styles.socialButtonText}>
-                  Continue with Apple
-                </Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.socialButton}
+                  onPress={() => handleSocialSignIn('Apple')}
+                >
+                  <View style={styles.socialButtonContent}>
+                    <View style={styles.socialIconContainer}>
+                      <Text style={styles.appleIcon}>🍎</Text>
+                    </View>
+                    <Text style={styles.socialButtonText}>Apple</Text>
+                  </View>
+                  <ChevronRight size={20} color="#BBBBBB" />
+                </TouchableOpacity>
+              </View>
             </View>
 
             {/* Sign Up Link */}
@@ -316,12 +326,40 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#BBBBBB',
   },
+  socialButtonsContainer: {
+    flexDirection: 'row',
+    gap: 12,
+  },
   socialButton: {
+    flex: 1,
     backgroundColor: '#2B2B3A',
     borderRadius: 12,
     paddingVertical: 16,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    justifyContent: 'space-between',
+  },
+  socialButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  socialIconContainer: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  googleIcon: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+  },
+  appleIcon: {
+    fontSize: 16,
   },
   socialButtonText: {
     fontSize: 16,
