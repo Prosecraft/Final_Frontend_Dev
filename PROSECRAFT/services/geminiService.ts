@@ -8,10 +8,11 @@ export interface GrammarAnalysis {
   corrections: GrammarCorrection[];
 }
 
-export const getGrammarSuggestions = async (text: string): Promise<GrammarAnalysis> => {
-  const GEMINI_API_URL = process.env.GEMINI_API_URL;
-  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+// API Configuration
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+const GEMINI_API_KEY = 'AIzaSyDoeZiYRUg8xYylpNuuY-810GEtSO2u1qs';
 
+export const getGrammarSuggestions = async (text: string): Promise<GrammarAnalysis> => {
   const prompt = `
     You are a grammar expert. Review the following text and return corrections in JSON format.
     Text: """${text}"""
@@ -35,8 +36,16 @@ export const getGrammarSuggestions = async (text: string): Promise<GrammarAnalys
       body: body
     });
 
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+
     const data = await response.json();
     const content = data.candidates[0]?.content?.parts[0]?.text;
+
+    if (!content) {
+      throw new Error('No content received from API');
+    }
 
     const jsonMatch = content.match(/```json\s*([\s\S]*?)```/);
     let jsonString = '';
@@ -50,14 +59,11 @@ export const getGrammarSuggestions = async (text: string): Promise<GrammarAnalys
     return JSON.parse(jsonString);
   } catch (error) {
     console.error('Error calling Gemini API:', error);
-    throw new Error('Failed to analyze text');
+    throw new Error('Failed to analyze text. Please check your internet connection.');
   }
 };
 
 export const getStyleEnhancement = async (text: string): Promise<any> => {
-  const GEMINI_API_URL = process.env.GEMINI_API_URL;
-  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
   const prompt = `
     You are a writing style expert. Analyze the following text and provide style enhancement suggestions in JSON format.
     Text: """${text}"""
@@ -85,8 +91,16 @@ export const getStyleEnhancement = async (text: string): Promise<any> => {
       body: body
     });
 
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+
     const data = await response.json();
     const content = data.candidates[0]?.content?.parts[0]?.text;
+
+    if (!content) {
+      throw new Error('No content received from API');
+    }
 
     const jsonMatch = content.match(/```json\s*([\s\S]*?)```/);
     let jsonString = '';
@@ -100,14 +114,11 @@ export const getStyleEnhancement = async (text: string): Promise<any> => {
     return JSON.parse(jsonString);
   } catch (error) {
     console.error('Error calling Gemini API:', error);
-    throw new Error('Failed to analyze style');
+    throw new Error('Failed to analyze style. Please check your internet connection.');
   }
 };
 
 export const getToneAnalysis = async (text: string): Promise<any> => {
-  const GEMINI_API_URL = process.env.GEMINI_API_URL;
-  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
   const prompt = `
     You are a tone analysis expert. Analyze the tone of the following text and return results in JSON format.
     Text: """${text}"""
@@ -136,8 +147,16 @@ export const getToneAnalysis = async (text: string): Promise<any> => {
       body: body
     });
 
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+
     const data = await response.json();
     const content = data.candidates[0]?.content?.parts[0]?.text;
+
+    if (!content) {
+      throw new Error('No content received from API');
+    }
 
     const jsonMatch = content.match(/```json\s*([\s\S]*?)```/);
     let jsonString = '';
@@ -151,14 +170,11 @@ export const getToneAnalysis = async (text: string): Promise<any> => {
     return JSON.parse(jsonString);
   } catch (error) {
     console.error('Error calling Gemini API:', error);
-    throw new Error('Failed to analyze tone');
+    throw new Error('Failed to analyze tone. Please check your internet connection.');
   }
 };
 
 export const getPlagiarismCheck = async (text: string): Promise<any> => {
-  const GEMINI_API_URL = process.env.GEMINI_API_URL;
-  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
   const prompt = `
     You are a plagiarism detection expert. Analyze the following text for potential plagiarism indicators and return results in JSON format.
     Text: """${text}"""
@@ -184,8 +200,16 @@ export const getPlagiarismCheck = async (text: string): Promise<any> => {
       body: body
     });
 
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+
     const data = await response.json();
     const content = data.candidates[0]?.content?.parts[0]?.text;
+
+    if (!content) {
+      throw new Error('No content received from API');
+    }
 
     const jsonMatch = content.match(/```json\s*([\s\S]*?)```/);
     let jsonString = '';
@@ -199,6 +223,6 @@ export const getPlagiarismCheck = async (text: string): Promise<any> => {
     return JSON.parse(jsonString);
   } catch (error) {
     console.error('Error calling Gemini API:', error);
-    throw new Error('Failed to check plagiarism');
+    throw new Error('Failed to check plagiarism. Please check your internet connection.');
   }
 }; 
