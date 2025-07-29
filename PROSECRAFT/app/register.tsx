@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { ArrowLeft, CheckCircle, ChevronRight, Eye, EyeOff, Mail, User } from 'lucide-react-native';
+import { CheckCircle, ChevronRight, Eye, EyeOff, Mail, User } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
   Alert,
@@ -279,7 +279,11 @@ const RegisterScreen = () => {
                 >
                   <View style={styles.socialButtonContent}>
                     <View style={styles.socialIconContainer}>
-                      <Text style={styles.googleIcon}>G</Text>
+                      <Image
+                        source={require('./assets/images/google.png')}
+                        style={styles.socialIcon}
+                        resizeMode="contain"
+                      />
                     </View>
                     <Text style={styles.socialButtonText}>Google</Text>
                   </View>
@@ -292,7 +296,11 @@ const RegisterScreen = () => {
                 >
                   <View style={styles.socialButtonContent}>
                     <View style={styles.socialIconContainer}>
-                      <Text style={styles.appleIcon}>🍎</Text>
+                      <Image
+                        source={require('./assets/images/apple-logo.png')}
+                        style={styles.socialIcon}
+                        resizeMode="contain"
+                      />
                     </View>
                     <Text style={styles.socialButtonText}>Apple</Text>
                   </View>
@@ -514,6 +522,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
+  },
+  socialIcon: {
+    width: 20,
+    height: 20,
   },
   googleIcon: {
     fontSize: 16,
