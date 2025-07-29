@@ -9,8 +9,8 @@ export interface GrammarAnalysis {
 }
 
 export const getGrammarSuggestions = async (text: string): Promise<GrammarAnalysis> => {
-  const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
-  const GEMINI_API_KEY = 'AIzaSyDoeZiYRUg8xYylpNuuY-810GEtSO2u1qs';
+  const GEMINI_API_URL = process.env.GEMINI_API_URL;
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
   const prompt = `
     You are a grammar expert. Review the following text and return corrections in JSON format.
@@ -55,8 +55,8 @@ export const getGrammarSuggestions = async (text: string): Promise<GrammarAnalys
 };
 
 export const getStyleEnhancement = async (text: string): Promise<any> => {
-  const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
-  const GEMINI_API_KEY = 'AIzaSyDoeZiYRUg8xYylpNuuY-810GEtSO2u1qs';
+  const GEMINI_API_URL = process.env.GEMINI_API_URL;
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
   const prompt = `
     You are a writing style expert. Analyze the following text and provide style enhancement suggestions in JSON format.
@@ -105,8 +105,8 @@ export const getStyleEnhancement = async (text: string): Promise<any> => {
 };
 
 export const getToneAnalysis = async (text: string): Promise<any> => {
-  const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
-  const GEMINI_API_KEY = 'AIzaSyDoeZiYRUg8xYylpNuuY-810GEtSO2u1qs';
+  const GEMINI_API_URL = process.env.GEMINI_API_URL;
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
   const prompt = `
     You are a tone analysis expert. Analyze the tone of the following text and return results in JSON format.
@@ -156,8 +156,8 @@ export const getToneAnalysis = async (text: string): Promise<any> => {
 };
 
 export const getPlagiarismCheck = async (text: string): Promise<any> => {
-  const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
-  const GEMINI_API_KEY = 'AIzaSyDoeZiYRUg8xYylpNuuY-810GEtSO2u1qs';
+  const GEMINI_API_URL = process.env.GEMINI_API_URL;
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
   const prompt = `
     You are a plagiarism detection expert. Analyze the following text for potential plagiarism indicators and return results in JSON format.
