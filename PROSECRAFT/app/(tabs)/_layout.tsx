@@ -87,6 +87,13 @@ export default function TabLayout() {
       
       {/* Hidden tabs - No tab bar */}
       <Tabs.Screen
+        name="profile"
+        options={{ 
+          title: 'Profile',
+          href: null, // This completely removes it from the tab bar
+        }}
+      />
+      <Tabs.Screen
         name="feedback"
         options={{ 
           title: 'Feedback',

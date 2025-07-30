@@ -209,22 +209,6 @@ const SettingsScreen = () => {
         <View style={[styles.section, { paddingHorizontal: spacing.lg }]}>
           <Text style={[styles.sectionTitle, { color: colors.textSecondary, fontSize: 10 }]}>Preferences</Text>
           <View style={[styles.settingsGroup, { backgroundColor: colors.surface, marginBottom: spacing.md }]}>
-            
-
-            <View style={[styles.settingItem, { borderBottomColor: colors.border }]}>
-              <Moon size={20} color={colors.primary} style={styles.itemIcon} />
-              <View style={styles.itemTextContainer}>
-                <Text style={[styles.itemTitle, { color: colors.text, fontSize: 15 }]}>Dark Mode</Text>
-                <Text style={[styles.itemDescription, { color: colors.textSecondary, fontSize: 10 }]}>Use dark theme</Text>
-              </View>
-              <Switch
-                trackColor={{ false: colors.border, true: colors.primary }}
-                thumbColor={darkModeEnabled ? colors.background : colors.textSecondary}
-                ios_backgroundColor={colors.border}
-                onValueChange={setDarkModeEnabled}
-                value={darkModeEnabled}
-              />
-            </View>
 
             <View style={[styles.settingItem, { borderBottomColor: colors.border }]}>
               <Bell size={20} color={colors.primary} style={styles.itemIcon} />

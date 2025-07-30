@@ -18,11 +18,12 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ThemedTextInput from '../../components/ThemedTextInput';
+import { useUser } from '../../contexts/UserContext';
 import { useTheme } from '../../hooks/useTheme';
 import {
   getGrammarSuggestions,
@@ -37,6 +38,7 @@ const { width } = Dimensions.get('window');
 const HomeScreen = () => {
   const router = useRouter();
   const { colors, spacing, fontSize } = useTheme();
+  const { user } = useUser();
   const [draftText, setDraftText] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResults, setAnalysisResults] = useState<any>(null);
@@ -105,25 +107,28 @@ const HomeScreen = () => {
 
   const applyGrammarFixes = (results: GrammarAnalysis) => {
     let correctedText = draftText;
-    results.corrections.forEach((correction: any) => {
-      correctedText = correctedText.replace(correction.original, correction.suggestion);
-    });
+    
+    if (results.corrections) {
+      results.corrections.forEach((correction: any) => {
+        correctedText = correctedText.replace(correction.original, correction.suggestion);
+      });
+    }
+    
     setDraftText(correctedText);
     Alert.alert('Fixes Applied', 'Grammar corrections have been applied to your text.');
   };
 
   const handleQuickAction = async (action: string) => {
     if (!draftText.trim()) {
-      Alert.alert('No Text', 'Please enter some text in the draft area first');
+      Alert.alert('No Text', 'Please enter some text to analyze');
       return;
     }
 
     setIsAnalyzing(true);
-
     try {
       switch (action) {
         case 'grammar':
-          Alert.alert('Grammar Check', 'Checking your text for grammar errors...', [{ text: 'OK' }]);
+          Alert.alert('Grammar Check', 'Checking your text for grammar issues...', [{ text: 'OK' }]);
           const grammarResults = await getGrammarSuggestions(draftText);
           
           if (grammarResults.corrections && grammarResults.corrections.length > 0) {
@@ -135,14 +140,11 @@ const HomeScreen = () => {
             
             Alert.alert(
               'Grammar Check Complete',
-              `Found ${grammarResults.corrections.length} potential issues:\n\n${correctionsText}`,
-              [
-                { text: 'Apply Fixes', onPress: () => applyGrammarFixes(grammarResults) },
-                { text: 'OK' }
-              ]
+              `Found ${grammarResults.corrections.length} issues:\n\n${correctionsText}`,
+              [{ text: 'Apply Fixes', onPress: () => applyGrammarFixes(grammarResults) }, { text: 'OK' }]
             );
           } else {
-            Alert.alert('Grammar Check Complete', '✅ No grammar issues found! Your text looks great.');
+            Alert.alert('Grammar Check Complete', '✅ No grammar issues found!');
           }
           break;
         
@@ -206,13 +208,18 @@ const HomeScreen = () => {
       <View style={[styles.header, {borderBottomColor: colors.border }]}>
         <View style={styles.headerLeft}>
           <Text style={[styles.welcomeText, { color: colors.textSecondary }]}>Welcome back</Text>
-          <Text style={[styles.userName, { color: colors.text, fontSize: 15 }]}>Ethan Thompson</Text>
+          <Text style={[styles.userName, { color: colors.text, fontSize: 15 }]}>
+            {user?.name || 'User'}
+          </Text>
         </View>
         <View style={styles.headerRight}>
           <TouchableOpacity style={styles.notificationButton}>
             <Bell size={24} color={colors.text} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.profileButton}>
+          <TouchableOpacity 
+            style={styles.profileButton}
+            onPress={() => router.push('/profile')}
+          >
             <User size={24} color={colors.text} />
           </TouchableOpacity>
         </View>
@@ -221,7 +228,7 @@ const HomeScreen = () => {
       <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
         
         {/* Watermark */}
-        <View style={styles.watermarkContainer} pointerEvents="none">
+        <View style={[styles.watermarkContainer, { pointerEvents: 'none' }]}>
           <Image
             source={require('../assets/images/prosecraft1-logo.png')}
             style={styles.watermarkImage}
@@ -247,10 +254,9 @@ const HomeScreen = () => {
             <View style={styles.draftContainer}>
               <View style={[styles.textInputWrapper, { backgroundColor: colors.border }]}>
                 <Edit3 size={18} color={colors.textSecondary} style={styles.pencilIcon} />
-                <TextInput
-                  style={[styles.textInput, { color: colors.text, fontSize: 15 }]}
+                <ThemedTextInput
+                  style={styles.textInput}
                   placeholder="Start writing your content here..."
-                  placeholderTextColor={colors.textSecondary}
                   multiline={true}
                   value={draftText}
                   onChangeText={setDraftText}
@@ -388,10 +394,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 24,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 8,
+    shadowRadius: 4,
+    elevation: 3,
   },
   draftHeader: {
     flexDirection: 'row',
@@ -474,8 +480,8 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowRadius: 4,
+    elevation: 3,
   },
   quickActionText: {
     fontWeight: '600',
@@ -490,8 +496,8 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowRadius: 4,
+    elevation: 3,
   },
   supportGroup: {
     borderRadius: 16,
@@ -499,8 +505,8 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowRadius: 4,
+    elevation: 3,
   },
   settingItem: {
     flexDirection: 'row',

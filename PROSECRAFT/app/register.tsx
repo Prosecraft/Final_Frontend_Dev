@@ -26,26 +26,111 @@ const RegisterScreen = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  
+  // Validation states
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(false);
 
   const handleGoBack = () => {
     router.push('/login');
   };
 
+  // Enhanced email validation
   const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // More comprehensive email regex
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
   };
 
+  // Enhanced password validation
   const validatePassword = (password: string) => {
-    return password.length >= 8;
+    const minLength = password.length >= 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumbers = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    
+    return {
+      isValid: minLength && hasUpperCase && hasLowerCase && hasNumbers,
+      minLength,
+      hasUpperCase,
+      hasLowerCase,
+      hasNumbers,
+      hasSpecialChar
+    };
+  };
+
+  // Real-time email validation
+  const handleEmailChange = (text: string) => {
+    setEmail(text);
+    if (text.trim() === '') {
+      setEmailError('');
+      setIsEmailValid(false);
+    } else if (!validateEmail(text)) {
+      setEmailError('Please enter a valid email address');
+      setIsEmailValid(false);
+    } else {
+      setEmailError('');
+      setIsEmailValid(true);
+    }
+  };
+
+  // Real-time password validation
+  const handlePasswordChange = (text: string) => {
+    setPassword(text);
+    const validation = validatePassword(text);
+    setIsPasswordValid(validation.isValid);
+    
+    if (text.trim() === '') {
+      setPasswordError('');
+    } else if (!validation.isValid) {
+      setPasswordError('Password must be at least 8 characters with uppercase, lowercase, and numbers');
+    } else {
+      setPasswordError('');
+    }
+    
+    // Check confirm password match
+    if (confirmPassword && text !== confirmPassword) {
+      setConfirmPasswordError('Passwords do not match');
+      setIsConfirmPasswordValid(false);
+    } else if (confirmPassword && text === confirmPassword) {
+      setConfirmPasswordError('');
+      setIsConfirmPasswordValid(true);
+    }
+  };
+
+  // Real-time confirm password validation
+  const handleConfirmPasswordChange = (text: string) => {
+    setConfirmPassword(text);
+    if (text.trim() === '') {
+      setConfirmPasswordError('');
+      setIsConfirmPasswordValid(false);
+    } else if (text !== password) {
+      setConfirmPasswordError('Passwords do not match');
+      setIsConfirmPasswordValid(false);
+    } else {
+      setConfirmPasswordError('');
+      setIsConfirmPasswordValid(true);
+    }
   };
 
   const handleSignUp = async () => {
+    // Clear any existing errors
+    setEmailError('');
+    setPasswordError('');
+    setConfirmPasswordError('');
+
+    // Validate full name
     if (!fullName.trim()) {
       Alert.alert('Error', 'Please enter your full name');
       return;
     }
 
+    // Validate email
     if (!email.trim()) {
       Alert.alert('Error', 'Please enter your email address');
       return;
@@ -56,13 +141,21 @@ const RegisterScreen = () => {
       return;
     }
 
+    // Validate password
     if (!password.trim()) {
       Alert.alert('Error', 'Please enter a password');
       return;
     }
 
-    if (!validatePassword(password)) {
-      Alert.alert('Error', 'Password must be at least 8 characters long');
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.isValid) {
+      Alert.alert('Error', 'Password must be at least 8 characters with uppercase, lowercase, and numbers');
+      return;
+    }
+
+    // Validate confirm password
+    if (!confirmPassword.trim()) {
+      Alert.alert('Error', 'Please confirm your password');
       return;
     }
 
@@ -88,6 +181,19 @@ const RegisterScreen = () => {
   const handleSocialSignUp = (provider: string) => {
     Alert.alert('Coming Soon', `${provider} sign-up will be available soon!`);
   };
+
+  const getPasswordStrength = (password: string) => {
+    const validation = validatePassword(password);
+    const criteria = [validation.minLength, validation.hasUpperCase, validation.hasLowerCase, validation.hasNumbers, validation.hasSpecialChar];
+    const metCriteria = criteria.filter(Boolean).length;
+    
+    if (metCriteria <= 2) return { level: 'Weak', color: '#FF6B6B' };
+    if (metCriteria <= 3) return { level: 'Fair', color: '#FFA500' };
+    if (metCriteria <= 4) return { level: 'Good', color: '#FFD700' };
+    return { level: 'Strong', color: '#4CAF50' };
+  };
+
+  const passwordStrength = getPasswordStrength(password);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -139,30 +245,32 @@ const RegisterScreen = () => {
 
             {/* Email Input */}
             <View style={styles.inputContainer}>
-              <View style={styles.inputWrapper}>
-                <Mail size={20} color="#BBBBBB" style={styles.inputIcon} />
+              <View style={[styles.inputWrapper, emailError ? styles.inputError : null]}>
+                <Mail size={20} color={emailError ? "#FF6B6B" : "#BBBBBB"} style={styles.inputIcon} />
                 <TextInput
                   style={styles.textInput}
                   placeholder="Email address"
                   placeholderTextColor="#BBBBBB"
                   value={email}
-                  onChangeText={setEmail}
+                  onChangeText={handleEmailChange}
                   keyboardType="email-address"
                   autoCapitalize="none"
                   autoCorrect={false}
                 />
+                {isEmailValid && <CheckCircle size={20} color="#4CAF50" style={styles.validIcon} />}
               </View>
+              {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
             </View>
 
             {/* Password Input */}
             <View style={styles.inputContainer}>
-              <View style={styles.inputWrapper}>
+              <View style={[styles.inputWrapper, passwordError ? styles.inputError : null]}>
                 <TextInput
                   style={styles.textInput}
                   placeholder="Password"
                   placeholderTextColor="#BBBBBB"
                   value={password}
-                  onChangeText={setPassword}
+                  onChangeText={handlePasswordChange}
                   secureTextEntry={!showPassword}
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -177,18 +285,30 @@ const RegisterScreen = () => {
                     <Eye size={20} color="#BBBBBB" />
                   )}
                 </TouchableOpacity>
+                {isPasswordValid && <CheckCircle size={20} color="#4CAF50" style={styles.validIcon} />}
               </View>
+              {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+              
+              {/* Password Strength Indicator */}
+              {password.length > 0 && (
+                <View style={styles.passwordStrengthContainer}>
+                  <Text style={styles.passwordStrengthLabel}>Password strength:</Text>
+                  <Text style={[styles.passwordStrengthText, { color: passwordStrength.color }]}>
+                    {passwordStrength.level}
+                  </Text>
+                </View>
+              )}
             </View>
 
             {/* Confirm Password Input */}
             <View style={styles.inputContainer}>
-              <View style={styles.inputWrapper}>
+              <View style={[styles.inputWrapper, confirmPasswordError ? styles.inputError : null]}>
                 <TextInput
                   style={styles.textInput}
                   placeholder="Confirm password"
                   placeholderTextColor="#BBBBBB"
                   value={confirmPassword}
-                  onChangeText={setConfirmPassword}
+                  onChangeText={handleConfirmPasswordChange}
                   secureTextEntry={!showConfirmPassword}
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -203,7 +323,9 @@ const RegisterScreen = () => {
                     <Eye size={20} color="#BBBBBB" />
                   )}
                 </TouchableOpacity>
+                {isConfirmPasswordValid && <CheckCircle size={20} color="#4CAF50" style={styles.validIcon} />}
               </View>
+              {confirmPasswordError ? <Text style={styles.errorText}>{confirmPasswordError}</Text> : null}
             </View>
 
             {/* Password Requirements */}
@@ -214,10 +336,37 @@ const RegisterScreen = () => {
               <View style={styles.requirementItem}>
                 <CheckCircle 
                   size={16} 
-                  color={password.length >= 8 ? '#00BCD4' : '#BBBBBB'} 
+                  color={password.length >= 8 ? '#4CAF50' : '#BBBBBB'} 
                 />
                 <Text style={styles.requirementText}>
                   At least 8 characters
+                </Text>
+              </View>
+              <View style={styles.requirementItem}>
+                <CheckCircle 
+                  size={16} 
+                  color={/[A-Z]/.test(password) ? '#4CAF50' : '#BBBBBB'} 
+                />
+                <Text style={styles.requirementText}>
+                  At least one uppercase letter
+                </Text>
+              </View>
+              <View style={styles.requirementItem}>
+                <CheckCircle 
+                  size={16} 
+                  color={/[a-z]/.test(password) ? '#4CAF50' : '#BBBBBB'} 
+                />
+                <Text style={styles.requirementText}>
+                  At least one lowercase letter
+                </Text>
+              </View>
+              <View style={styles.requirementItem}>
+                <CheckCircle 
+                  size={16} 
+                  color={/\d/.test(password) ? '#4CAF50' : '#BBBBBB'} 
+                />
+                <Text style={styles.requirementText}>
+                  At least one number
                 </Text>
               </View>
             </View>
@@ -553,5 +702,33 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: '#00BCD4',
+  },
+  inputError: {
+    borderColor: '#FF6B6B',
+    borderWidth: 1,
+  },
+  errorText: {
+    color: '#FF6B6B',
+    fontSize: 12,
+    marginTop: 4,
+    marginLeft: 16,
+  },
+  validIcon: {
+    marginLeft: 8,
+  },
+  passwordStrengthContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+    marginLeft: 16,
+  },
+  passwordStrengthLabel: {
+    fontSize: 12,
+    color: '#BBBBBB',
+    marginRight: 8,
+  },
+  passwordStrengthText: {
+    fontSize: 12,
+    fontWeight: '600',
   },
 }); 

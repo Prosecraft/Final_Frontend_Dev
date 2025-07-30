@@ -35,6 +35,7 @@ interface ThemeContextType {
     medium: number;
     large: number;
   };
+  getInputFontSize: () => number;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -150,6 +151,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const spacing = spacingSchemes[layoutDensity];
   const fontSizeValues = fontSizeSchemes[fontSize];
 
+  // Helper function to get input font size based on current fontSize setting
+  const getInputFontSize = () => {
+    return fontSizeValues.medium; // Use medium size for input fields
+  };
+
   const value: ThemeContextType = {
     theme,
     colorScheme,
@@ -162,6 +168,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     colors,
     spacing,
     fontSizeValues,
+    getInputFontSize,
   };
 
   return React.createElement(ThemeContext.Provider, { value }, children);
